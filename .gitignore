@@ -1,0 +1,11 @@
+# build output
+build/
+app/.build/
+daemon/*.o
+daemon/wfcd
+daemon/hwtest
+daemon/ledtest
+daemon/tests
+
+# macOS
+.DS_Store
