@@ -32,6 +32,7 @@ cat > "$APP/Contents/Info.plist" <<PLIST
 </plist>
 PLIST
 
+strip -x "$APP/Contents/MacOS/WFCConnector" "$APP/Contents/Resources/wfcd"
 codesign --force --sign - "$APP/Contents/Resources/wfcd"
 codesign --force --sign - "$APP"
 echo "Built $APP"

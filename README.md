@@ -4,11 +4,21 @@ This project brings the Nintendo Wi-Fi USB Connector back to life on a modern Ma
 
 The app drives the original USB connector directly. It turns the connector into a wireless access point for a Nintendo DS. It shares the Mac's internet connection with the DS. It also points the DS at Wiimmfi, the community server that replaced Nintendo Wi-Fi Connection after Nintendo shut it down in 2014.
 
+## Download
+
+The easiest way to get the app is from the [Releases page](https://github.com/oddnebula/nintendo-wifi-usb-connector-macos/releases/latest). Download the zip, unzip it, and move `WFC Connector.app` to your Applications folder.
+
+The download runs on Macs with Apple silicon (M1 or newer) and macOS 14 or newer. It does not run on Intel Macs. Intel Mac owners can build it from source instead.
+
+The app is not signed by Apple. Because of that, macOS blocks it the first time. To open it, right-click the app and choose **Open**, then click **Open** again. If macOS still blocks it, go to System Settings, then Privacy & Security, and click **Open Anyway**. You only have to do this once.
+
 ## Requirements
 
 To begin, you need the original Nintendo Wi-Fi USB Connector (USB ID `0411:008b`). Other adapters with the same Ralink RT2570 chip should also work, but only the Nintendo one has been tested.
 
-Additionally, building the app needs the Xcode Command Line Tools and libusb from Homebrew.
+## Building from source
+
+Building the app needs the Xcode Command Line Tools and libusb from Homebrew.
 
 ```
 xcode-select --install
@@ -16,8 +26,6 @@ brew install libusb
 ```
 
 The finished app does not need Homebrew. libusb is built into it.
-
-## Building
 
 Run the build script from the project folder.
 
