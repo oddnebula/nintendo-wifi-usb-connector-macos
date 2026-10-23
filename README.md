@@ -4,6 +4,8 @@ This project brings the Nintendo Wi-Fi USB Connector back to life on a modern Ma
 
 The app drives the original USB connector directly. It turns the connector into a wireless access point for a Nintendo DS. It shares the Mac's internet connection with the DS. It also points the DS at Wiimmfi, the community server that replaced Nintendo Wi-Fi Connection after Nintendo shut it down in 2014.
 
+![The app granting a DS access, then showing who is online](docs/demo.gif)
+
 ## Download
 
 The easiest way to get the app is from the [Releases page](https://github.com/oddnebula/nintendo-wifi-usb-connector-macos/releases/latest). Download the zip, unzip it, and move `WFC Connector.app` to your Applications folder.
@@ -46,6 +48,24 @@ The app ends up in `build/WFC Connector.app`.
 7. Run the connection test on the DS.
 
 Leave the DNS on the DS set to Auto-obtain. The app sends the DNS traffic from the DS to the server in the Setup tab. Nothing needs to be typed on the DS.
+
+## Online Now
+
+The **Online Now** tab shows how many people are playing DS games on Wiimmfi right now. It lists every DS game that has players, with the busiest game at the top. Click a game to open its page on wiimmfi.de. The list refreshes every minute while the tab is open.
+
+This tab works even when the connector is not plugged in.
+
+Wiimmfi does not have a public API, so the app reads the stats page on wiimmfi.de. The site uses a Cloudflare browser check. The app loads the page in a hidden WebKit view, the same engine Safari uses, and the check passes on its own after a few seconds. If Cloudflare ever asks for a click, the app shows a button to open the page in your browser instead.
+
+## Screenshots
+
+![Consoles tab with two connected consoles](docs/consoles.png)
+
+![Online Now tab](docs/online-now.png)
+
+![Setup tab](docs/setup.png)
+
+The screenshots were taken in demo mode, so the consoles are fake.
 
 ## How it works
 

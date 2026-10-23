@@ -1,11 +1,12 @@
 import SwiftUI
 
 enum Tab: String, CaseIterable, Identifiable {
-    case consoles = "Consoles", setup = "Setup", log = "Log"
+    case consoles = "Consoles", online = "Online Now", setup = "Setup", log = "Log"
     var id: String { rawValue }
     var icon: String {
         switch self {
         case .consoles: return "person.2.wave.2"
+        case .online: return "globe.asia.australia"
         case .setup: return "gearshape"
         case .log: return "list.bullet.rectangle"
         }
@@ -15,6 +16,7 @@ enum Tab: String, CaseIterable, Identifiable {
 struct ContentView: View {
     @EnvironmentObject var model: ConnectorModel
     @StateObject private var tab = Box(Tab.consoles)
+    @StateObject private var online = OnlineStats()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -31,6 +33,7 @@ struct ContentView: View {
             Group {
                 switch tab.value {
                 case .consoles: ConsolesView()
+                case .online: OnlineView().environmentObject(online)
                 case .setup: SetupView()
                 case .log: LogView()
                 }
@@ -38,7 +41,8 @@ struct ContentView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .overlay {
-            if !model.helperConnected { ConnectOverlay() }
+            // The online stats don't need the helper, so that tab stays usable without it.
+            if !model.helperConnected && tab.value != .online { ConnectOverlay() }
         }
         .sheet(item: $model.permissionRequest) { c in PermissionSheet(console: c) }
         .alert("WFC Connector", isPresented: Binding(get: { model.errorMessage != nil },
@@ -47,7 +51,10 @@ struct ContentView: View {
         } message: {
             Text(model.errorMessage ?? "")
         }
-        .onAppear { model.connectOrLaunch() }
+        .onAppear {
+            model.connectOrLaunch()
+            online.refresh() // warm up so Online Now is ready when opened
+        }
     }
 }
 
@@ -265,7 +272,12 @@ struct ConsoleRow: View {
         }
     }
 
-    func fmt(_ b: UInt64) -> String { ByteCountFormatter.string(fromByteCount: Int64(b), countStyle: .file) }
+    func fmt(_ b: UInt64) -> String {
+        let f = ByteCountFormatter()
+        f.countStyle = .file
+        f.allowsNonnumericFormatting = false // "0 KB", not "Zero KB"
+        return f.string(fromByteCount: Int64(b))
+    }
 }
 
 // MARK: - Permission prompt (the original's "grant access" dialog)
